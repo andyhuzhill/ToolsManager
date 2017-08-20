@@ -90,7 +90,7 @@ class Tools(Base):
     # 单位: 月
     check_period = Column(Integer, nullable=True)
 
-    # 厂家　
+    # 厂家
     vendor = Column(String, nullable=False)
 
     # 使用局
@@ -107,3 +107,32 @@ class Tools(Base):
 
     # 备注
     remarks = Column(String, nullable=True)
+
+
+class BorrowRecord(Base):
+    """
+       BorrowRecord
+    """
+
+    id = Column(Integer, primary_key=True, nullable=False)
+
+    # 工具二维码编号
+    tool_id = Column(String, nullable=False)
+
+    # 借用人
+    user_id = Column(String, nullable=False)
+
+    # 借出时间
+    borrow_date = Column(Date, nullable=True)
+
+    # 借出审批人
+    borrow_check_user = Column(String, nullable=False)
+
+    # 归还时间
+    return_data = Column(Date, nullable=True)
+
+    # 归还审批人
+    return_check_user = Column(String, nullable=False)
+
+    # 备注
+    remarks = Column(String, nullable=False)
