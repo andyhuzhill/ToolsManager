@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Date    : 2017-08-19 10:50:38
+# @Date    : 2017-08-20 14:24:38
 # @Author  : ${Your Name} (${you@example.org})
 # @Link    : 
 # @Version : ${1.0.0}
 
-from flask import Flask
-from flask import request
+from db import db
+from app import app
 
-app = Flask(__name__)
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
 
+manager = Manager(app)
+migrate = Migrate(app, db)
 
-@app.route("/t/", methods=["GET"])
-def query_tools():
-    qrcode = request.args.get('qr', None)
-    return "<h1> qr = {0} </h1>".format(qrcode)
+manager.add_command('db', MigrateCommand)
 
 if __name__ == "__main__":
-    app.run()
+    # db.init_database()
+    manager.run()
