@@ -1,0 +1,11 @@
+form {
+    max-width: 400px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.copyinfo {
+    position: fixed;
+    left: 50%;
+    bottom: 0px;
+}

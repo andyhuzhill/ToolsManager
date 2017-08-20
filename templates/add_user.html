@@ -1,0 +1,24 @@
+{% extends "layout.html" %} {% block page_content %}
+<form class="center-block" action="/dashboard/add_user" method="post">
+    <label for="add-user">添加用户</label>
+    <div class="form-group"><input type="text" class="form-control" id="user-id" placeholder="用户名" required></div>
+    <div class="form-group"><input type="text" class="form-control" id="password" placeholder="密码" required></div>
+    <div class="form-group"><input type="text" class="form-control" id="name" placeholder="姓名" 　required></div>
+    <div class="form-group"><select name="sex" id="sex" class="form-control"><option value="0">男</option><option value="1">女</option></select></div>
+    <div class="form-group"><label for="photo">照片</label><input type="file" class="form-control" id="photo" required onchange="fileChanged(this)"></div>
+    <div class="form-group"><input type="text" class="form-control" id="duty" placeholder="职务" 　required></div>
+    <div class="form-group"><input type="text" class="form-control" id="department" placeholder="部门" 　required></div>
+    <div class="form-group"><input type="text" class="form-control" id="phone-number" placeholder="电话号码" 　required></div>
+    <div class="form-group"><select name="admin" id="admin" class="form-control"><option value="0">普通用户</option><option value="1">管理员</option></select></div>
+    <div class="form-group"><input type="text" class="form-control" id="remarks" placeholder="备注"></div>
+    <button class="btn btn-primary" onclick="return doSubmit();">提交</button>
+</form>
+
+<div class="row">
+    <div class="col-md-4">查询</div>
+    <div class="col-md-4">面板</div>
+    <div class="col-md-4">登录</div>
+</div>
+{% endblock %} {% block scripts %} {{ super() }}
+<script src="{{ url_for('static', filename='js/adduser.js') }}"></script>
+{% endblock %}

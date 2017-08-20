@@ -149,3 +149,16 @@ class BorrowRecord(db.Model):
     def __repr__(self):
         return "<BorrowRecord(id={0}, tool_id={1}, user_id={2}, borrow_date={3},  borrow_check_user={4}, return_date ={4}, return_check_user={5}, remarks={6})>".format(
         self.id, self.tool_id, self.user_id, self.borrow_date, self.borrow_check_user, self.return_date, self.return_check_user, self.remarks)
+
+
+class SiteInfo(db.Model):
+    """
+        site copyright informations
+    """
+    __tablename__ = "site_info"
+
+    site_name = Column(String, nullable=False, primary_key=True)
+
+    welcome_info = Column(String, nullable=False)
+
+    copyright_info = Column(String, nullable=False)
