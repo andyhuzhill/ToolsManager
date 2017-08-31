@@ -2,8 +2,12 @@ var log = console.log.bind(document)
 
 function doSubmit() {
     var userID = document.querySelector("#user-id").value
-    log(userID)
-    return false
+    if (userID == "") {
+        alert("请输入用户ID!")
+        return false
+    }
+    var submitForm = document.querySelector("#add-form")
+    submitForm.submit()
 }
 
 function fileChanged(target) {
