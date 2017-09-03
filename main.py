@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # @Date    : 2017-08-20 14:24:38
 # @Author  : ${Your Name} (${you@example.org})

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # @Date    : 2017-08-20 14:15:33
 # @Author  : ${Your Name} (${you@example.org})
@@ -28,8 +28,8 @@ def add_user(user_id, password, name, sex, photo, duty, department, phone_number
     try:
         db.session.add(user)
         db.session.commit()
-    except Exception, e:
-        print('Exception:', e)
+    except Exception as e:
+        print('Exception!', e)
         return None, e
 
     return user, None

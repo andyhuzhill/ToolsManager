@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3~
 # -*- coding: utf-8 -*-
 # @Date    : 2017-08-19 10:50:38
 # @Author  : ${Your Name} (${you@example.org})
@@ -54,7 +54,7 @@ def add_user_display():
 
 @app.route('/dashboard/add_user', methods=['POST'])
 def add_user_post():
-    print "add user post"
+    print("add user post")
     user_id = request.form["user-id"]
     password = request.form["password"]
     user_name = request.form["name"]
