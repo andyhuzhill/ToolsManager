@@ -43,8 +43,8 @@ class User(db.Model):
     # 电话号码
     phone_number = Column(String, nullable=False)
 
-    # 管理员权限
-    admin = Column(Boolean, nullable=False)
+    # 管理员权限 1 普通用户 2 管理员
+    admin = Column(Integer, nullable=False)
 
     # 备注
     remarks = Column(String, nullable=True)

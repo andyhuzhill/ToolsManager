@@ -24,7 +24,6 @@ def add_user(user_id, password, name, sex, photo, duty, department, phone_number
                 phone_number =  phone_number,
                 admin = admin,
                 remarks = remarks)
-
     try:
         db.session.add(user)
         db.session.commit()
