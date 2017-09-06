@@ -80,7 +80,7 @@ class Tools(db.Model):
     category = Column(String, nullable=False)
 
     # 状态
-    # 0 在库　1 审批中　2 借出 3 送检中
+    # 1 在库　2 审批中　3 借出 4 送检中
     status = Column(Integer, nullable=False)
 
     # 是否需要定检

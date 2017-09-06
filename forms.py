@@ -8,7 +8,7 @@
 import os
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, FileField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, FileField, TextAreaField, IntegerField, BooleanField, DateField
 from wtforms.validators import Required, Regexp
 
 class AddUserForm(FlaskForm):
@@ -22,4 +22,24 @@ class AddUserForm(FlaskForm):
     telephone = StringField('电话号码', validators=[Required(), Regexp('^\d+$')])
     admin = SelectField('权限', validators=[Required()], choices=[(1, "普通用户"), (2, "管理员")], coerce=int)
     remarks = TextAreaField('备注')
+    submit = SubmitField('添加')
+
+
+class AddToolsForm(FlaskForm):
+    tool_id = IntegerField('工具编号', validators=[Required()])
+    name = StringField('名称', validators=[Required()])
+    model = StringField('型号', validators=[Required()])
+    picture = FileField('图片', validators=[Required()])
+    position = StringField('定置点', validators=[Required()])
+    category = StringField('类别', validators=[Required()])
+    status = SelectField('状态', validators=[Required()], choices=[(1, "在库"), (2, "审批中"), (3, "借出"), (4, "送检中")], coerce=int)
+    need_check = BooleanField('是否需要定检', validators=[Required()])
+    last_check_date = DateField('上次定检时间', format='%Y-%m-%d')
+    check_period = IntegerField('定检周期(月)')
+    vendor = StringField('厂家', validators=[Required()])
+    use_bureau = StringField('使用局', validators=[Required()])
+    use_department = StringField('使用部门', validators=[Required()])
+    use_shift =  StringField('使用班组', validators=[Required()])
+    user = StringField('使用人', validators=[Required()])
+    remarks = StringField('备注')
     submit = SubmitField('添加')

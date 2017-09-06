@@ -1,0 +1,23 @@
+{% extends "layout.html" %} {% block page_content %}
+
+{% if info.found %}
+<div class="container">
+    <div class="row">
+        <div class="col-ms-12">
+            {{ info.name }}
+        </div>
+    </div>
+</div>
+
+{% else %}
+    <center>
+        <h2>未找到该工具的信息!</h2>
+    </center>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-4">查询</div>
+    <div class="col-md-4">面板</div>
+    <div class="col-md-4">登录</div>
+</div>
+{% endblock %}  

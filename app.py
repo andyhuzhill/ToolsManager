@@ -14,7 +14,7 @@ from flask import request, session, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 
 import db
-from forms import AddUserForm
+from forms import AddUserForm, AddToolsForm
 
 
 app = Flask(__name__)
@@ -36,8 +36,9 @@ def index():
 
 @app.route('/t/', methods=['GET'])
 def query_tools():
-    qrcode = request.args.get('qr', None)
-    return "<h1> qr = {0} </h1>".format(qrcode)
+    tool_id = request.args.get('qr', None)
+    tool_info = db.query_tool_infos(tool_id)
+    return render_template('tools_details.html', info = tool_info), 200
 
 
 @app.errorhandler(404)
@@ -49,13 +50,14 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
+
 @app.route('/auth/login', methods=['GET', 'POST'])
 def login():
     pass
 
 
 @app.route('/dashboard/add_user', methods=['GET', 'POST'])
-def add_user_display():
+def add_user_handler():
     add_user_form = AddUserForm()
     if add_user_form.validate_on_submit():
         user_id = add_user_form.user_id.data
@@ -69,7 +71,8 @@ def add_user_display():
         admin = add_user_form.admin.data
         remarks = add_user_form.remarks.data
 
-        user, err = db.add_user(user_id, password, user_name, sex, photo.read(), duty, department, telephone, admin, remarks)
+        user = db.add_user(user_id, password, user_name, sex, photo.read(
+        ), duty, department, telephone, admin, remarks)
 
         if user is not None:
             flash("添加用户成功!")
@@ -79,16 +82,42 @@ def add_user_display():
 
     return render_template('add_user.html', form=add_user_form), 200
 
- 
+
 @app.route('/dashboard/batch_add_user', methods=['GET'])
 def batch_add_user_display():
     return render_template('batch_add_user.html'), 200
 
 
-@app.route('/dashboard/add_user', methods=['POST'])
-def handle_add_user():
-    return redirect(url_for('index')), 200
+@app.route('/dashboard/add_tools', methods=['GET', 'POST'])
+def add_tools_handler():
+    add_tools_form = AddToolsForm()
+    if add_tools_form.validate_on_submit():
+        tool_id = add_tools_form.tool_id.data
+        name = add_tools_form.name.data
+        model = add_tools_form.model.data
+        picture = add_tools_form.picture.data
+        position = add_tools_form.position.data
+        category = add_tools_form.category.data
+        status = add_tools_form.status.data
+        need_check = add_tools_form.need_check.data
+        last_check_date = add_tools_form.last_check_date.data
+        check_period = add_tools_form.check_period.data
+        vendor = add_tools_form.vendor.data
+        use_bureau = add_tools_form.use_bureau.data
+        use_department = add_tools_form.use_department.data
+        use_shift = add_tools_form.use_shift.data
+        user = add_tools_form.user.data
+        remarks = add_tools_form.remarks.data
 
+        tool = db.add_tool(tool_id, name, model, picture, position, category, status, need_check, last_check_date, check_period, vendor, use_bureau, use_department, use_shift, user, remarks)
+
+        if tool is not None:
+            flash('添加工具成功!')
+            return redirect(url_for('index'))
+        else:
+            flash('添加工具失败!')
+    
+    return render_template('add_tools.html', form=add_tools_form), 200
 
 
 if __name__ == "__main__":

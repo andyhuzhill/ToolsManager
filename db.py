@@ -14,6 +14,7 @@ def init_database():
 
 
 def add_user(user_id, password, name, sex, photo, duty, department, phone_number, admin, remarks):
+
     user = User(user_id = user_id,
                 password = password,
                 name = name,
@@ -24,17 +25,78 @@ def add_user(user_id, password, name, sex, photo, duty, department, phone_number
                 phone_number =  phone_number,
                 admin = admin,
                 remarks = remarks)
-    try:
-        db.session.add(user)
-        db.session.commit()
-    except Exception as e:
-        print('Exception!', e)
-        return None, e
 
-    return user, None
+    find = User.query.filter_by(user_id = user_id).first()
 
+    if find is None:
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except Exception as e:
+            print('Exception!', e)
+            return None
+    else:
+        return None
+
+    return user
 
 def delete_user(user_id, admin_id, admin_password):
     pass
 
+
+def add_tool(tool_id, name, model, picture, position, category, status, need_check, last_check_date, check_period, vendor, use_bureau, use_department, use_shift, user, remarks):
+    tool = Tools(tool_id = tool_id,
+                    name = name,
+                    model = model,
+                    picture=picture,
+                    position = position,
+                    category = category,
+                    status = status,
+                    need_check = need_check,
+                    last_check_date = last_check_date,
+                    check_period = check_period,
+                    vendor = vendor,
+                    use_bureau = use_bureau,
+                    use_department = use_department,
+                    use_shift= use_shift,
+                    user = user,
+                    remarks = remarks)
+
+    find = Tools.query.filter_by(tool_id = tool_id).first()
+
+    if find is not None:
+        try:
+            db.session.add(tool)
+            db.session.commit()
+        except Exception as e:
+            print('Exception!', e)
+            return None
+    else:
+        return None
+    
+    return tool
+
+def query_tool_infos(tool_id):
+    tool = Tools.query.filter_by(tool_id = tool_id).first()
+    result = dict()
+    result["found"] = False
+    if tool is not None:
+        result["found"] = True
+        result["tool_id"] = tool.tool_id
+        result["name"] = tool.name
+        result["model"] = tool.models
+        result["picture"] = tool.picture
+        result["position"] = tool.position
+        result["category"] = tool.category
+        result["status"] = tool.status
+        result["need_check"] = tool.need_check
+        result["last_check_date"] = tool.last_check_date
+        result["check_period"] = tool.check_period
+        result["vendor"] = tool.vendor
+        result["use_bureau"] = tool.use_bureau
+        result["use_department"] = tool.use_department
+        result["use_shift"] = tool.use_shift
+        result["user"] = tool.user
+        result["remarks"] = tool.remarks
+    return result
     
