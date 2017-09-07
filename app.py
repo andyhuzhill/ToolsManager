@@ -62,14 +62,15 @@ def tool_image_handler(tool_id):
     if tool_info["found"]:
         response = make_response(tool_info["picture"])
         return response
-    else:
-        return ""
+    return ""
 
 @app.route('/images/users/<user_id>', methods=['GET'])
 def user_image_handler(user_id):
-    # user_info = db.
-    pass
-
+    user_info = db.query_user(user_id)
+    if user_info['found']:
+        response = make_response(user_info["user"].photo)
+        return response
+    return ""
 
 @app.route('/dashboard/add_user', methods=['GET', 'POST'])
 def add_user_handler():
@@ -102,6 +103,11 @@ def add_user_handler():
 def batch_add_user_display():
     return render_template('batch_add_user.html'), 200
 
+
+@app.route('/dashboard/user_list', methods=['GET', 'POST'])
+def user_list_handler():
+    user_infos = db.get_all_user_infos()
+    return render_template('user_list.html', user_infos=user_infos), 200
 
 @app.route('/dashboard/add_tools', methods=['GET', 'POST'])
 def add_tools_handler():

@@ -40,6 +40,17 @@ def add_user(user_id, password, name, sex, photo, duty, department, phone_number
 
     return user
 
+def get_all_user_infos():
+    return User.query.all()
+
+def query_user(user_id):
+    user = User.query.filter_by(user_id = user_id).first()
+    result = dict()
+    result["found"] = False
+    if user is not None:
+        result["found"] = True
+        result["user"] = user
+    return result
 
 def delete_user(user_id, admin_id, admin_password):
     pass
