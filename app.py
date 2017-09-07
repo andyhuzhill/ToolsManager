@@ -9,7 +9,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 from flask import Flask
-from flask import request, session, render_template, redirect, url_for, flash
+from flask import request, session, render_template, redirect, url_for, flash, make_response
 
 from flask_bootstrap import Bootstrap
 
@@ -38,7 +38,7 @@ def index():
 def query_tools():
     tool_id = request.args.get('qr', None)
     tool_info = db.query_tool_infos(tool_id)
-    return render_template('tools_details.html', info = tool_info), 200
+    return render_template('tools_details.html', info=tool_info), 200
 
 
 @app.errorhandler(404)
@@ -53,6 +53,21 @@ def internal_server_error(e):
 
 @app.route('/auth/login', methods=['GET', 'POST'])
 def login():
+    pass
+
+
+@app.route('/images/tools/<tool_id>', methods=['GET'])
+def tool_image_handler(tool_id):
+    tool_info = db.query_tool_infos(tool_id)
+    if tool_info["found"]:
+        response = make_response(tool_info["picture"])
+        return response
+    else:
+        return ""
+
+@app.route('/images/users/<user_id>', methods=['GET'])
+def user_image_handler(user_id):
+    # user_info = db.
     pass
 
 
@@ -109,14 +124,15 @@ def add_tools_handler():
         user = add_tools_form.user.data
         remarks = add_tools_form.remarks.data
 
-        tool = db.add_tool(tool_id, name, model, picture, position, category, status, need_check, last_check_date, check_period, vendor, use_bureau, use_department, use_shift, user, remarks)
+        tool = db.add_tool(tool_id, name, model, picture.read(), position, category, status, need_check,
+                           last_check_date, check_period, vendor, use_bureau, use_department, use_shift, user, remarks)
 
         if tool is not None:
             flash('添加工具成功!')
             return redirect(url_for('index'))
         else:
             flash('添加工具失败!')
-    
+
     return render_template('add_tools.html', form=add_tools_form), 200
 
 

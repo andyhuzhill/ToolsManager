@@ -1,18 +1,73 @@
-{% extends "layout.html" %} {% block page_content %}
-
-{% if info.found %}
+{% extends "layout.html" %} {% block page_content %} {% if info.found %}
 <div class="container">
-    <div class="row">
-        <div class="col-ms-12">
-            {{ info.name }}
+    <div class="row center-block">
+        <img src="/images/tools/{{ info.tool_id }}">
+
+        <div class="col-ms-4">
+            <label for="">工具名称</label> {{ info.name }}
         </div>
+        <div class="col-ms-4">
+            <label for="">型号</label>{{ info.model }}
+        </div>
+        <div class="col-ms-4">
+            <label for="">定制号:</label> {{ info.position }}
+        </div>
+        <div class="col-ms-4">
+            <label for="">类别:</label> {{ info.category }}
+        </div>
+        <div class="col-ms-4">
+            <label for="">状态</label>
+            {% if info.status == 1 %}
+            在库 
+            {% elif info.status == 2 %}
+            审批中 
+            {% elif info.status == 3 %} 
+            借出 
+            {% elif info.status == 4 %} 
+            送检中 
+            {% else %}
+            未知状态 
+            {% endif %}
+        </div>
+
+        {% if info.need_check %}
+        <div class="col-ms-4">
+            <label for="">上次定检时间</label> {{ info.last_check_date }}
+        </div>
+        <div class="col-ms-4">
+            <label for="">定检周期</label> {{ info.check_period }} 月
+        </div>
+        {% endif %}
+
+        <div class="col-ms-4">
+            <label for="">厂家</label> {{ info.vendor }}
+        </div>
+        <div class="col-ms-4">
+            <label for="">使用局</label> {{ info.use_bureau }}
+        </div>
+        <div class="col-ms-4">
+            <label for="">使用部门</label> {{ info.use_department }}
+        </div>
+
+        <div class="col-ms-4">
+            <label for="">使用班组</label> {{ info.use_shift }}
+        </div>
+
+        <div class="col-ms-4">
+            <label for="">使用人</label> {{ info.user }}
+        </div>
+
+        <div class="col-ms-4">
+            <label for="">备注</label> {{ info.remarks }}
+        </div>
+
     </div>
 </div>
 
 {% else %}
-    <center>
-        <h2>未找到该工具的信息!</h2>
-    </center>
+<center>
+    <h2>未找到该工具的信息!</h2>
+</center>
 {% endif %}
 
 <div class="row">
@@ -20,4 +75,4 @@
     <div class="col-md-4">面板</div>
     <div class="col-md-4">登录</div>
 </div>
-{% endblock %}  
+{% endblock %}
