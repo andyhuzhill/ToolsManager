@@ -92,14 +92,14 @@ def add_user_handler():
 
         if user is not None:
             flash("添加用户成功!")
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard_handler'))
         else:
             flash("添加用户失败!")
 
     return render_template('add_user.html', form=add_user_form), 200
 
 
-@app.route('/dashboard/batch_add_user', methods=['GET'])
+@app.route('/dashboard/batch_add_user', methods=['GET', 'POST'])
 def batch_add_user_display():
     return render_template('batch_add_user.html'), 200
 
@@ -110,7 +110,7 @@ def user_list_handler():
     return render_template('user_list.html', user_infos=user_infos), 200
 
 @app.route('/dashboard/add_tools', methods=['GET', 'POST'])
-def add_tools_handler():
+def add_tool_handler():
     add_tools_form = AddToolsForm()
     if add_tools_form.validate_on_submit():
         tool_id = add_tools_form.tool_id.data
@@ -135,12 +135,21 @@ def add_tools_handler():
 
         if tool is not None:
             flash('添加工具成功!')
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard_handler'))
         else:
             flash('添加工具失败!')
 
-    return render_template('add_tools.html', form=add_tools_form), 200
+    return render_template('add_tool.html', form=add_tools_form), 200
 
+
+@app.route('/dashboard/batch_add_tool', methods=['GET', 'POST'])
+def batch_add_tools_handler():
+    return render_template('batch_add_tool.html'), 200
+
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+def dashboard_handler():
+    return render_template('dashboard.html'), 200
 
 if __name__ == "__main__":
     app.run()
