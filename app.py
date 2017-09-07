@@ -99,15 +99,14 @@ def add_user_handler():
     return render_template('add_user.html', form=add_user_form), 200
 
 
-@app.route('/dashboard/batch_add_user', methods=['GET', 'POST'])
-def batch_add_user_display():
-    return render_template('batch_add_user.html'), 200
+@app.route('/dashboard/batch_add_users', methods=['GET', 'POST'])
+def batch_add_users_handler():
+    return render_template('batch_add_users.html'), 200
 
-
-@app.route('/dashboard/user_list', methods=['GET', 'POST'])
-def user_list_handler():
+@app.route('/dashboard/users_list', methods=['GET', 'POST'])
+def users_list_handler():
     user_infos = db.get_all_user_infos()
-    return render_template('user_list.html', user_infos=user_infos), 200
+    return render_template('users_list.html', user_infos=user_infos), 200
 
 @app.route('/dashboard/add_tools', methods=['GET', 'POST'])
 def add_tool_handler():
@@ -142,9 +141,14 @@ def add_tool_handler():
     return render_template('add_tool.html', form=add_tools_form), 200
 
 
-@app.route('/dashboard/batch_add_tool', methods=['GET', 'POST'])
+@app.route('/dashboard/batch_add_tools', methods=['GET', 'POST'])
 def batch_add_tools_handler():
-    return render_template('batch_add_tool.html'), 200
+    return render_template('batch_add_tools.html'), 200
+
+@app.route('/dashboard/tools_list', methods=['GET', 'POST'])
+def tools_list_handler():
+    tools_list = db.get_all_tools()
+    return render_template('tools_list.html', tool_infos=tools_list), 200
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])

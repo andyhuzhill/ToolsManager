@@ -1,0 +1,31 @@
+{% extends  "layout.html" %}
+
+{% block page_content %}
+<div class="container">
+        {% for tool_info in tool_infos %}
+        <div class="row">
+            <img src="/images/tools/{{ tool_info.tool_id }}">
+            <label for="">名称:</label>
+            {{ tool_info.name }}
+            <label for="">定置号:</label>
+            {{ tool_info.position }}
+            <label for="">类别:</label>
+            {{ tool_info.category }}
+            <label for="">状态:</label>
+            {{ tool_info.status }}
+            <label for="">厂家</label>
+            {{ tool_info.vendor }}
+            <label for="">使用局</label>
+            {{ tool_info.use_bureau }}
+            <label for="">使用部门</label>
+            {{ tool_info.use_department }}
+            <label for="">使用班组</label>
+            {{ tool_info.use_shift }}
+            <label for="">使用人</label>
+            {{ tool_info.user }}
+            <label for="">备注</label>
+            {{ tool_info.remarks }}
+        </div>
+        {% endfor %}
+</div>
+{% endblock %}

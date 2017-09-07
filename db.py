@@ -88,6 +88,8 @@ def add_tool(tool_id, name, model, picture, position, category, status, need_che
 
     return tool
 
+def get_all_tools():
+    return Tools.query.all()
 
 def query_tool_infos(tool_id):
     tool = Tools.query.filter_by(tool_id=tool_id).first()

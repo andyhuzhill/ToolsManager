@@ -1,9 +1,16 @@
 {% extends "layout.html" %} {% block page_content %}
 <div class="container">
     <div class="center-block">
+        <label for="用户列表"><a href="{{ url_for('users_list_handler') }}">用户列表</a></label>
         <label for="添加用户"><a href="{{ url_for('add_user_handler') }}">添加用户</a></label>
+        <label for="批量添加用户"><a href="{{ url_for('batch_add_users_handler') }}">批量添加用户</a></label>
+
+        <label for="工具列表"><a href="{{ url_for('tools_list_handler')　}}">工具列表</a></label>
+
         <label for="添加工具"><a href="{{ url_for('add_tool_handler') }}">添加工具</a></label>
-        <label for="用户列表"><a href="{{ url_for('user_list_handler') }}">用户列表</a></label>
+        <label for="批量添加工具"><a href="{{ url_for('batch_add_tools_handler') }}">批量添加工具</a></label>
+    
+
     </div>
 </div>
 {% endblock %}
