@@ -9,6 +9,7 @@ from sqlalchemy import Column, Integer, String, Date, Boolean, LargeBinary
 
 from app import app
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy(app)
 
@@ -24,6 +25,19 @@ class User(db.Model):
 
     # 密码
     password = Column(String, nullable=False)
+
+    password_hash = Column(String, nullable=False)
+
+    @property
+    def login_password(self):
+        raise AttributeError("login_password is not a readable attribute")
+    
+    @login_password.setter
+    def login_password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     # 姓名
     name = Column(String, nullable=False)
