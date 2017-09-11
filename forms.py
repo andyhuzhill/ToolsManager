@@ -12,8 +12,7 @@ from wtforms import StringField, PasswordField, SubmitField, SelectField, FileFi
 from wtforms.validators import Required, Regexp
 
 class LoginForm(FlaskForm):
-    user_name = StringField('用户名', validators=[Required()]
-    )
+    user_name = StringField('用户名', validators=[Required()])
     login_password = PasswordField('密码', validators=[Required()])
     remember_me = BooleanField('记住我', [Required()])
 
