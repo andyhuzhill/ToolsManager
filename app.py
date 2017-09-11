@@ -56,7 +56,7 @@ def login_handler():
         login_password = login_form.login_password.data
         user = db.User.query.filter_by(name=user_name).first()
         if user is not None and user.verify_password(login_password):
-            login_user(user, form.remembber_me.data)
+            login_user(user, login_form.remember_me.data)
             return redirect(url_for('index'))
         flash('用户名或密码错误')
 

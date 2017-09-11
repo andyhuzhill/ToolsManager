@@ -15,7 +15,11 @@ def init_database():
 
 
 def add_user(user_id, password, name, sex, photo, duty, department, phone_number, admin, remarks):
-    user = User(user_id=user_id,
+    find = User.query.filter_by(user_id=user_id).first()
+
+    if find is None:
+        try:
+            user = User(user_id=user_id,
                 password=password,
                 name=name,
                 sex=sex,
@@ -25,11 +29,6 @@ def add_user(user_id, password, name, sex, photo, duty, department, phone_number
                 phone_number=phone_number,
                 admin=admin,
                 remarks=remarks)
-
-    find = User.query.filter_by(user_id=user_id).first()
-
-    if find is None:
-        try:
             db.session.add(user)
             db.session.commit()
         except Exception as e:
