@@ -7,13 +7,20 @@
 
 from sqlalchemy import Column, Integer, String, Date, Boolean, LargeBinary
 
-from app import app
+from app import app, login_manager
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from flask_login import UserMixin
+
+
 db = SQLAlchemy(app)
 
-class User(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class User(UserMixin, db.Model):
     """
         System user informations
     """
@@ -24,16 +31,17 @@ class User(db.Model):
     user_id = Column(String, primary_key=True, nullable=False, unique=True)
 
     # 密码
-    password = Column(String, nullable=False)
+    # password = Column(String, nullable=False)
 
+    # 密码
     password_hash = Column(String, nullable=False)
 
     @property
-    def login_password(self):
+    def password(self):
         raise AttributeError("login_password is not a readable attribute")
     
-    @login_password.setter
-    def login_password(self, password):
+    @password.setter
+    def password(self, password):
         self.password_hash = generate_password_hash(password)
     
     def verify_password(self, password):

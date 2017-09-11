@@ -6,10 +6,11 @@
 # @Version : ${1.0.0}
 
 from db import db
-from app import app
+from app import app, login_manager
 
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
+
 
 manager = Manager(app)
 migrate = Migrate(app, db)
@@ -17,5 +18,6 @@ migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 
 if __name__ == "__main__":
+    login_manager.init_app(app)
     manager.run()
     

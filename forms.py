@@ -11,6 +11,13 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, FileField, TextAreaField, IntegerField, BooleanField, DateField
 from wtforms.validators import Required, Regexp
 
+class LoginForm(FlaskForm):
+    user_name = StringField('用户名', validators=[Required()]
+    )
+    login_password = PasswordField('密码', validators=[Required()])
+    remember_me = BooleanField('记住我', [Required()])
+
+    submit = SubmitField('登录')
 
 class AddUserForm(FlaskForm):
     user_id = StringField('用户名', validators=[Required()])

@@ -12,10 +12,16 @@ from flask import Flask
 from flask import request, session, render_template, redirect, url_for, flash, make_response
 
 from flask_bootstrap import Bootstrap
+from flask_login import login_required, login_user, logout_user
 
 import db
-from forms import AddUserForm, AddToolsForm
+from forms import LoginForm, AddUserForm, AddToolsForm
 
+from flask_login import LoginManager
+
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'login_handler'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -27,7 +33,7 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 bootstrap = Bootstrap(app)
-
+login_manager.init_app(app)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -41,6 +47,27 @@ def query_tools():
     return render_template('tools_details.html', info=tool_info), 200
 
 
+@app.route('/login', methods=['GET','POST'])
+def login_handler():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user_name = login_form.user_name.data
+        login_password = login_form.login_password.data
+        user = db.User.query.filter_by(name = user_name).first()
+        if user is not None and user.verify_password(login_password):
+            login_user(user, form.remembber_me.data)
+            return redirect(url_for('index'))
+        flash('用户名或密码错误')
+
+    return render_template('login.html', form=login_form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('您的帐号已注销')
+    return redirect(url_for('index'))
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -51,12 +78,8 @@ def internal_server_error(e):
     return render_template('500.html'), 500
 
 
-@app.route('/auth/login', methods=['GET', 'POST'])
-def login():
-    pass
-
-
 @app.route('/images/tools/<tool_id>', methods=['GET'])
+@login_required
 def tool_image_handler(tool_id):
     tool_info = db.query_tool_infos(tool_id)
     if tool_info["found"]:
@@ -65,6 +88,7 @@ def tool_image_handler(tool_id):
     return ""
 
 @app.route('/images/users/<user_id>', methods=['GET'])
+@login_required
 def user_image_handler(user_id):
     user_info = db.query_user(user_id)
     if user_info['found']:
@@ -73,6 +97,7 @@ def user_image_handler(user_id):
     return ""
 
 @app.route('/dashboard/add_user', methods=['GET', 'POST'])
+@login_required
 def add_user_handler():
     add_user_form = AddUserForm()
     if add_user_form.validate_on_submit():
@@ -100,15 +125,18 @@ def add_user_handler():
 
 
 @app.route('/dashboard/batch_add_users', methods=['GET', 'POST'])
+@login_required
 def batch_add_users_handler():
     return render_template('batch_add_users.html'), 200
 
 @app.route('/dashboard/users_list', methods=['GET', 'POST'])
+@login_required
 def users_list_handler():
     user_infos = db.get_all_user_infos()
     return render_template('users_list.html', user_infos=user_infos), 200
 
 @app.route('/dashboard/add_tools', methods=['GET', 'POST'])
+@login_required
 def add_tool_handler():
     add_tools_form = AddToolsForm()
     if add_tools_form.validate_on_submit():
@@ -142,16 +170,19 @@ def add_tool_handler():
 
 
 @app.route('/dashboard/batch_add_tools', methods=['GET', 'POST'])
+@login_required
 def batch_add_tools_handler():
     return render_template('batch_add_tools.html'), 200
 
 @app.route('/dashboard/tools_list', methods=['GET', 'POST'])
+@login_required
 def tools_list_handler():
     tools_list = db.get_all_tools()
     return render_template('tools_list.html', tool_infos=tools_list), 200
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def dashboard_handler():
     return render_template('dashboard.html'), 200
 
