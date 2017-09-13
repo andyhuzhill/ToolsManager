@@ -1,9 +1,34 @@
-{% extends "layout.html" %}
-
-{% block page_content %}
+{% extends "layout.html" %} {% block page_content %}
 
 <div class="row">
     {{ site_name }}
 </div>
 
-{% endblock %}
+{% if userinfo %} 
+{% set user = userinfo.user %}
+<center>
+    <div class="row">
+        <img src="/images/users/{{ user.user_id }}" alt="">
+    </div>
+    <div class="row">
+        <label for="">姓名:</label> {{ user.name }}
+    </div>
+    <div class="row">
+        <label for="">部门:</label> {{ user.department }}
+    </div>
+    <div class="row">
+        <label for="">职务:</label> {{ user.duty }}
+    </div>
+    <div class="row">
+        <label for="">是否管理员:</label> {{ user.admin }}
+    </div>
+    <div class="row">
+        <label for="">电话号码</label> {{ user.phone_number}}
+    </div>
+
+    {% if user.admin == 2 %}
+    <button class="btn btn-default"><a href="{{ url_for('dashboard_handler')}}"> 控制面板 </a></button>
+    {% endif %}
+</center>
+
+{% endif %} {% endblock %}

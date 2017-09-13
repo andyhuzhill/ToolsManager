@@ -17,11 +17,12 @@ from flask_login import login_required, login_user, logout_user
 import db
 from forms import LoginForm, AddUserForm, AddToolsForm
 
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
-login_manager.login_view = 'login_handler'
+login_manager.login_view = 'login'
+login_manager.login_message = u'请先登录以访问该网页!'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -38,7 +39,10 @@ login_manager.init_app(app)
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html'), 200
+    userinfo = None
+    if current_user.is_authenticated:
+        userinfo = db.query_user(current_user.get_id())
+    return render_template('index.html', userinfo=userinfo), 200
 
 
 @app.route('/t/', methods=['GET'])
@@ -49,15 +53,16 @@ def query_tools():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login_handler():
+def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
         user_name = login_form.user_name.data
         login_password = login_form.login_password.data
         user = db.User.query.filter_by(name=user_name).first()
         if user is not None and user.verify_password(login_password):
-            login_user(user, login_form.remember_me.data)
-            return redirect(url_for('index'))
+            if login_user(user, login_form.remember_me.data):
+                flash('登录成功!')
+                return redirect(url_for('index'))
         flash('用户名或密码错误')
 
     return render_template('login.html', form=login_form)

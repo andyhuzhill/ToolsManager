@@ -18,7 +18,11 @@ db = SQLAlchemy(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    print('user_id = ', user_id)
+    if user_id is not None:
+        return User.query.get(user_id) #.get(int(user_id))
+    else:
+        return None
 
 class User(UserMixin, db.Model):
     """
@@ -30,6 +34,9 @@ class User(UserMixin, db.Model):
     # 用户名
     user_id = Column(String, primary_key=True, nullable=False, unique=True)
 
+    def get_id(self):
+        return self.user_id
+
     # 密码
     # password = Column(String, nullable=False)
 
@@ -38,7 +45,8 @@ class User(UserMixin, db.Model):
 
     @property
     def password(self):
-        raise AttributeError("login_password is not a readable attribute")
+        return ''
+        # raise AttributeError("login_password is not a readable attribute")
     
     @password.setter
     def password(self, password):
