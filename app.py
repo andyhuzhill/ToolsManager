@@ -15,7 +15,7 @@ from flask_bootstrap import Bootstrap
 from flask_login import login_required, login_user, logout_user
 
 import db
-from forms import LoginForm, AddUserForm, AddToolsForm
+from forms import LoginForm, AddUserForm, AddToolsForm, SiteInfoForm
 
 from flask_login import LoginManager, current_user
 
@@ -39,14 +39,21 @@ login_manager.init_app(app)
 
 @app.route('/', methods=['GET'])
 def index():
+    siteInfo = db.get_site_info()
     userinfo = None
     if current_user.is_authenticated:
         userinfo = db.query_user(current_user.get_id())
-    return render_template('index.html', userinfo=userinfo), 200
+
+    return render_template('index.html', userinfo=userinfo, siteInfo=siteInfo), 200
 
 
 @app.route('/t/', methods=['GET', 'POST'])
 def query_tools():
+    if request.method == 'POST':
+        submit_type = request.form.get('type')
+        tool_id = request.form.get('tool_id')
+        current_user_id = current_user.get_id()
+
     tool_id = request.args.get('qr', None)
     tool_info = db.query_tool_infos(tool_id)
     return render_template('tools_details.html', info=tool_info), 200
@@ -55,6 +62,7 @@ def query_tools():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm()
+    site_info = db.get_site_info()
     if login_form.validate_on_submit():
         user_name = login_form.user_name.data
         login_password = login_form.login_password.data
@@ -65,7 +73,7 @@ def login():
                 return redirect(url_for('index'))
         flash('用户名或密码错误')
 
-    return render_template('login.html', form=login_form)
+    return render_template('login.html', form=login_form, siteInfo=site_info)
 
 
 @app.route('/logout')
@@ -84,6 +92,12 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
+
+
+@app.route('/dashboard/approval', methods=['GET', 'POST'])
+def approval():
+    apply_list = []
+    return render_template('approval.html', apply_list=apply_list), 200
 
 
 @app.route('/images/tools/<tool_id>', methods=['GET'])
@@ -192,6 +206,20 @@ def batch_add_tools_handler():
 def tools_list_handler():
     tools_list = db.get_all_tools()
     return render_template('tools_list.html', tool_infos=tools_list), 200
+
+
+@app.route('/dashboard/site_info_edit', methods=['GET', 'POST'])
+@login_required
+def site_info():
+    siteInfoForm = SiteInfoForm()
+    if siteInfoForm.validate_on_submit():
+        info = db.set_site_info(siteInfoForm.site_name.data, siteInfoForm.welcome_info.data, siteInfoForm.copyright_info.data)
+        if info is not None:
+            flash('站点信息修改成功!')
+            return  redirect(url_for('index'))
+        else:
+            flash('站点信息修改失败!')
+    return render_template("siteinfo.html", form=siteInfoForm), 200
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])

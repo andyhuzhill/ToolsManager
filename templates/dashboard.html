@@ -19,6 +19,14 @@
         <button class="btn btn-lg btn-default">
             <label for="批量添加工具"><a href="{{ url_for('batch_add_tools_handler') }}">批量添加工具</a></label>           
         </button>
+
+        <button class="btn btn-lg btn-default">
+            <label for="借出审批"><a href="{{ url_for('approval') }}">借出审批</a></label>
+        </button>
+
+        <button class="btn btn-lg btn-default">
+            <label for="站点信息"><a href="{{ url_for('site_info') }}">编辑站点信息</a></label>
+        </button>
     </div>
 </div>
 {% endblock %}

@@ -7,7 +7,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
-from models import db, User, Tools, BorrowRecord
+from models import db, User, Tools, BorrowRecord, SiteInfo
 
 
 def init_database():
@@ -20,15 +20,15 @@ def add_user(user_id, password, name, sex, photo, duty, department, phone_number
     if find is None:
         try:
             user = User(user_id=user_id,
-                password=password,
-                name=name,
-                sex=sex,
-                photo=photo,
-                duty=duty,
-                department=department,
-                phone_number=phone_number,
-                admin=admin,
-                remarks=remarks)
+                        password=password,
+                        name=name,
+                        sex=sex,
+                        photo=photo,
+                        duty=duty,
+                        department=department,
+                        phone_number=phone_number,
+                        admin=admin,
+                        remarks=remarks)
             db.session.add(user)
             db.session.commit()
         except Exception as e:
@@ -91,6 +91,10 @@ def add_tool(tool_id, name, model, picture, position, category, status, need_che
     return tool
 
 
+def apply_for_borrow_tool(tool_id, user_id):
+    pass
+
+
 def get_all_tools():
     return Tools.query.all()
 
@@ -118,3 +122,26 @@ def query_tool_infos(tool_id):
         result["user"] = tool.user
         result["remarks"] = tool.remarks
     return result
+
+
+def set_site_info(site_name, welcome_info, copyright_info):
+    siteInfo = SiteInfo.query.first()
+    if siteInfo is None:
+        siteInfo = SiteInfo(
+            site_name=site_name, welcome_info=welcome_info, copyright_info=copyright_info)
+    else:
+        siteInfo.site_name = site_name
+        siteInfo.welcome_info = welcome_info
+        siteInfo.copyright_info = copyright_info
+
+    try:
+        db.session.add(siteInfo)
+        db.session.commit()
+    except Exception as e:
+        print('Exception!', e)
+        return None
+    return siteInfo
+
+def get_site_info():
+    siteInfo = SiteInfo.query.first()
+    return siteInfo

@@ -16,18 +16,8 @@
             <label for="">类别:</label> {{ info.category }}
         </div>
         <div class="col-ms-4">
-            <label for="">状态</label>
-            {% if info.status == 1 %}
-            在库 
-            {% elif info.status == 2 %}
-            审批中 
-            {% elif info.status == 3 %} 
-            借出 
-            {% elif info.status == 4 %} 
-            送检中 
-            {% else %}
-            未知状态 
-            {% endif %}
+            <label for="">状态</label> {% if info.status == 1 %} 在库 {% elif info.status == 2 %} 审批中 {% elif info.status ==
+            3 %} 借出 {% elif info.status == 4 %} 送检中 {% else %} 未知状态 {% endif %}
         </div>
 
         {% if info.need_check %}
@@ -61,6 +51,13 @@
             <label for="">备注</label> {{ info.remarks }}
         </div>
 
+        {% if info.status == 1 %}
+        <form method="POST">
+            <input type="hidden" name="type" value="borrow">
+            <input type="hidden" name="tool_id" value="{{ info.tool_id }}">
+            <input type="submit" class="btn btn-lg btn-primary" value="申请借出"></input>
+        </form>
+        {% endif %}
     </div>
 </div>
 

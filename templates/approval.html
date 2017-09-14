@@ -1,0 +1,21 @@
+{% extends "layout.html" %} {% block page_content %}
+
+<div class="row">
+    {{ site_name }}
+</div>
+
+{% if True %}
+
+<center>
+    <table>
+        <thead>工具借出申请列表</thead>
+        <tr>
+            {% for apply in apply_list %}
+            <td> apply.tool_name </td>
+            <td> apply.user_name </td>
+            {% endfor %}
+        </tr>
+    </table>
+</center>
+
+{% endif %} {% endblock %}

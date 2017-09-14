@@ -1,11 +1,13 @@
 {% extends "layout.html" %} {% block page_content %}
+ {% if siteInfo %}
+<center>
+    <h2>
+        {{ siteInfo.welcome_info }}
+    </h2>
+</center>
+{% endif %} 
 
-<div class="row">
-    {{ site_name }}
-</div>
-
-{% if userinfo %} 
-{% set user = userinfo.user %}
+{% if userinfo %} {% set user = userinfo.user %}
 <center>
     <div class="row">
         <img src="/images/users/{{ user.user_id }}" alt="">
@@ -27,8 +29,7 @@
     </div>
 
     {% if user.admin == 2 %}
-    <button class="btn btn-default"><a href="{{ url_for('dashboard_handler')}}"> 控制面板 </a></button>
-    {% endif %}
+    <button class="btn btn-default"><a href="{{ url_for('dashboard_handler')}}"> 控制面板 </a></button> {% endif %}
 </center>
 
 {% endif %} {% endblock %}

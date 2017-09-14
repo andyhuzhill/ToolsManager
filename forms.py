@@ -53,3 +53,10 @@ class AddToolsForm(FlaskForm):
     user = StringField('使用人', validators=[Required()])
     remarks = StringField('备注')
     submit = SubmitField('添加')
+
+
+class SiteInfoForm(FlaskForm):
+    site_name = StringField('站点名称', validators=[Required()])
+    welcome_info = StringField('欢迎信息', validators=[Required()])
+    copyright_info = StringField('版权信息', validators=[Required()])
+    submit = SubmitField("修改")

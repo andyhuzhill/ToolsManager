@@ -4,13 +4,6 @@
 
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% if siteInfo %}
-<center>
-    <h2>
-        {{ siteInfo.welcome_info }}
-    </h2>
-</center>
-{% endif %} 
 {{ wtf.quick_form(form, extra_classes="center-block") }}
 
 {% endblock %}
