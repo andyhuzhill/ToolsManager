@@ -45,7 +45,7 @@ def index():
     return render_template('index.html', userinfo=userinfo), 200
 
 
-@app.route('/t/', methods=['GET'])
+@app.route('/t/', methods=['GET', 'POST'])
 def query_tools():
     tool_id = request.args.get('qr', None)
     tool_info = db.query_tool_infos(tool_id)
