@@ -53,6 +53,7 @@ def query_tools():
         submit_type = request.form.get('type')
         tool_id = request.form.get('tool_id')
         current_user_id = current_user.get_id()
+        # 　TODO　借出审批处理
 
     tool_id = request.args.get('qr', None)
     tool_info = db.query_tool_infos(tool_id)
@@ -136,8 +137,8 @@ def add_user_handler():
         admin = add_user_form.admin.data
         remarks = add_user_form.remarks.data
 
-        user = db.add_user(user_id, password, user_name, sex, photo.read(
-        ), duty, department, telephone, admin, remarks)
+        user = db.add_user(user_id, password, user_name, sex,
+                           photo.read(), duty, department, telephone, admin, remarks)
 
         if user is not None:
             flash("添加用户成功!")
@@ -213,10 +214,11 @@ def tools_list_handler():
 def site_info():
     siteInfoForm = SiteInfoForm()
     if siteInfoForm.validate_on_submit():
-        info = db.set_site_info(siteInfoForm.site_name.data, siteInfoForm.welcome_info.data, siteInfoForm.copyright_info.data)
+        info = db.set_site_info(siteInfoForm.site_name.data,
+                                siteInfoForm.welcome_info.data, siteInfoForm.copyright_info.data)
         if info is not None:
             flash('站点信息修改成功!')
-            return  redirect(url_for('index'))
+            return redirect(url_for('index'))
         else:
             flash('站点信息修改失败!')
     return render_template("siteinfo.html", form=siteInfoForm), 200
