@@ -8,16 +8,13 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-from flask import Flask
-from flask import request, session, render_template, redirect, url_for, flash, make_response
+from flask import Flask, request, session, render_template, redirect, url_for, flash, make_response
 
 from flask_bootstrap import Bootstrap
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, LoginManager, current_user
 
 import db
 from forms import LoginForm, AddUserForm, AddToolsForm, SiteInfoForm
-
-from flask_login import LoginManager, current_user
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
