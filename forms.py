@@ -51,7 +51,7 @@ class AddToolsForm(FlaskForm):
     use_department = StringField('使用部门', validators=[Required()])
     use_shift = StringField('使用班组', validators=[Required()])
     user = StringField('使用人', validators=[Required()])
-    remarks = StringField('备注')
+    remarks = TextAreaField('备注')
     submit = SubmitField('添加')
 
 
