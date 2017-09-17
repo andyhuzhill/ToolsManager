@@ -16,8 +16,20 @@
             <label for="">类别:</label> {{ info.category }}
         </div>
         <div class="col-ms-4">
-            <label for="">状态</label> {% if info.status == 1 %} 在库 {% elif info.status == 2 %} 审批中 {% elif info.status ==
-            3 %} 借出 {% elif info.status == 4 %} 送检中 {% else %} 未知状态 {% endif %}
+            <label for="">状态</label> 
+            {% if info.status == 1 %} 
+            在库 
+            {% elif info.status == 2 %} 
+            借出审批中 
+            {% elif info.status == 3 %}
+            借出中
+            {% elif info.status == 4 %}
+            归还审批中
+            {% elif info.status == 5 %}
+            送检中 
+            {% else %} 
+            未知状态 
+            {% endif %}
         </div>
 
         {% if info.need_check %}
