@@ -19,7 +19,7 @@
         <label for="">职务:</label> {{ user.duty }}
     </div>
     <div class="row">
-        <label for="">是否管理员:</label> {{ user.admin }}
+        <label for="">权限</label>:</label> {% if user.admin == 2 %} 管理员 {% else %} 普通用户 {% endif %}
     </div>
     <div class="row">
         <label for="">电话号码</label> {{ user.phone_number}}

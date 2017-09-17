@@ -2,7 +2,7 @@
 
 {% block page_content %}
 <div class="container">
-        {% for user_info in user_infos %}
+        {% for user_info in user_list %}
         <div class="row">
             <img src="/images/users/{{ user_info.user_id }}">
             <label for="">用户名:</label>
@@ -11,8 +11,8 @@
             {{ user_info.department }}
             <label for="">职务:</label>
             {{ user_info.duty }}
-            <label for="">是否管理员:</label>
-            {{ user_info.admin }}
+            <label for="">权限:</label>
+            {% if user_info.admin == 2 %} 管理员 {% else %} 普通用户 {% endif %}
             <label for="">电话号码</label>
             {{ user_info.phone_number}}
         </div>

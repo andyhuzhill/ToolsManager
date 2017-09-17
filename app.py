@@ -227,8 +227,8 @@ def batch_add_users_handler():
 @app.route('/dashboard/users_list', methods=['GET', 'POST'])
 @login_required
 def users_list_handler():
-    user_infos = db.get_all_user_infos()
-    return render_template('users_list.html', user_infos=user_infos), 200
+    user_info_list = db.get_all_user_infos()
+    return render_template('users_list.html', user_list=user_info_list), 200
 
 
 @app.route('/dashboard/add_tools', methods=['GET', 'POST'])
