@@ -1,32 +1,36 @@
 {% extends "layout.html" %} {% block page_content %}
 <div class="container">
-    <div class="center-block">
-        <button class="btn btn-lg btn-default">
-            <label for="用户列表"><a href="{{ url_for('users_list_handler') }}">用户列表</a></label>
+    <button class="btn btn-lg btn-default">
+            <label for="工具列表"><a href="{{ url_for('tools_list_handler')　}}">工具列表</a>
+            </label>
+        </button> {% if current_user.admin == 2 %}
+    <button class="btn btn-lg btn-default">
+            <label for="用户列表"><a href="{{ url_for('users_list_handler') }}">用户列表</a>
+            </label>
         </button>
-        <button class="btn btn-lg btn-default">
-            <label for="添加用户"><a href="{{ url_for('add_user_handler') }}">添加用户</a></label>
+    <button class="btn btn-lg btn-default">
+            <label for="添加用户"><a href="{{ url_for('add_user_handler') }}">添加用户</a>
+            </label>
         </button>
-        <button class="btn btn-lg btn-default">
-            <label for="批量添加用户"><a href="{{ url_for('batch_add_users_handler') }}">批量添加用户</a></label>
+    <button class="btn btn-lg btn-default">
+            <label for="批量添加用户"><a href="{{ url_for('batch_add_users_handler') }}">批量添加用户</a>
+            </label>
         </button>
-        <button class="btn btn-lg btn-default">
-            <label for="工具列表"><a href="{{ url_for('tools_list_handler')　}}">工具列表</a></label>
+    <button class="btn btn-lg btn-default">
+            <label for="添加工具"><a href="{{ url_for('add_tool_handler') }}">添加工具</a>
+            </label> 
         </button>
-        <button class="btn btn-lg btn-default">
-            <label for="添加工具"><a href="{{ url_for('add_tool_handler') }}">添加工具</a></label> 
+    <button class="btn btn-lg btn-default">
+            <label for="批量添加工具"><a href="{{ url_for('batch_add_tools_handler') }}">批量添加工具</a>
+            </label>           
         </button>
-        <button class="btn btn-lg btn-default">
-            <label for="批量添加工具"><a href="{{ url_for('batch_add_tools_handler') }}">批量添加工具</a></label>           
+    <button class="btn btn-lg btn-default">
+            <label for="借出审批"><a href="{{ url_for('approval') }}">借出审批</a>
+            </label>
         </button>
-
-        <button class="btn btn-lg btn-default">
-            <label for="借出审批"><a href="{{ url_for('approval') }}">借出审批</a></label>
-        </button>
-
-        <button class="btn btn-lg btn-default">
-            <label for="站点信息"><a href="{{ url_for('site_info') }}">编辑站点信息</a></label>
-        </button>
-    </div>
+    <button class="btn btn-lg btn-default">
+            <label for="站点信息"><a href="{{ url_for('site_info') }}">编辑站点信息</a>
+            </label>
+        </button> {% endif %}
 </div>
 {% endblock %}

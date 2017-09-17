@@ -35,6 +35,7 @@ login_manager.init_app(app)
 
 
 @app.route('/', methods=['GET'])
+@login_required
 def index():
     siteInfo = db.get_site_info()
     userinfo = None
