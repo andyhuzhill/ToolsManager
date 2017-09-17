@@ -18,9 +18,8 @@ db = SQLAlchemy(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    print('user_id = ', user_id)
     if user_id is not None:
-        return User.query.get(user_id) #.get(int(user_id))
+        return User.query.get(user_id)
     else:
         return None
 
@@ -36,9 +35,6 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         return self.user_id
-
-    # 密码
-    # password = Column(String, nullable=False)
 
     # 密码
     password_hash = Column(String, nullable=False)
@@ -110,7 +106,7 @@ class Tools(db.Model):
     category = Column(String, nullable=False)
 
     # 状态
-    # 1 在库　2 审批中　3 借出 4 送检中
+    # 1 在库　2 审批中　3 借出 4 申请归还 5 送检中
     status = Column(Integer, nullable=False)
 
     # 是否需要定检
@@ -138,13 +134,16 @@ class Tools(db.Model):
     # 使用人
     user = Column(String, nullable=False)
 
+    # 借用人
+    borrow_user = Column(String, nullable=True)
+
     # 备注
     remarks = Column(String, nullable=True)
 
 
     def __repr__(self):
-        return "<Tools(tool_id={0}, name={1}, model={2}, position={3}, category={4}, status={5}, need_check={6}, last_check_date={7}, check_period={8}, vendor={9}, use_bureau={10}, use_department={11}, use_shift={12}, user={13}, remarks={14})>".format(
-        self.tool_id, self.name, self.model, self.position, self.category, self.status, self.need_check, self.last_check_date, self.check_period, self.vendor, self.use_bureau, self.use_department, self.use_shift, self.user, self.remarks)
+        return "<Tools(tool_id={0}, name={1}, model={2}, position={3}, category={4}, status={5}, need_check={6}, last_check_date={7}, check_period={8}, vendor={9}, use_bureau={10}, use_department={11}, use_shift={12}, user={13}, borrow_user={14} remarks={15})>".format(
+        self.tool_id, self.name, self.model, self.position, self.category, self.status, self.need_check, self.last_check_date, self.check_period, self.vendor, self.use_bureau, self.use_department, self.use_shift, self.borrow_user, self.user, self.remarks)
 
 
 class BorrowRecord(db.Model):
@@ -161,16 +160,16 @@ class BorrowRecord(db.Model):
     user_id = Column(String, nullable=False)
 
     # 借出时间
-    borrow_date = Column(Date, nullable=True)
+    borrow_date = Column(Date, nullable=False)
 
     # 借出审批人
-    borrow_check_user = Column(String, nullable=False)
+    borrow_check_user = Column(String, nullable=True)
 
     # 归还时间
     return_date = Column(Date, nullable=True)
 
     # 归还审批人
-    return_check_user = Column(String, nullable=False)
+    return_check_user = Column(String, nullable=True)
 
     # 备注
     remarks = Column(String, nullable=False)

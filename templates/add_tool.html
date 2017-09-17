@@ -1,12 +1,5 @@
-{% extends "layout.html" %} {% block page_content %}
-
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "layout.html" %} {% block page_content %} {% import "bootstrap/wtf.html" as wtf %}
 
 {{ wtf.quick_form(form, extra_classes="center-block") }}
 
-<div class="row">
-    <div class="col-md-4">查询</div>
-    <div class="col-md-4">面板</div>
-    <div class="col-md-4">登录</div>
-</div>
-{% endblock %}  
+{% endblock %}

@@ -46,15 +46,87 @@ def index():
 
 @app.route('/t/', methods=['GET', 'POST'])
 def query_tools():
-    if request.method == 'POST':
-        submit_type = request.form.get('type')
-        tool_id = request.form.get('tool_id')
-        current_user_id = current_user.get_id()
-        # 　TODO　借出审批处理
-
     tool_id = request.args.get('qr', None)
     tool_info = db.query_tool_infos(tool_id)
     return render_template('tools_details.html', info=tool_info), 200
+
+
+@app.route('/borrow_request/<tool>/from/<user>', methods=['POST'])
+@login_required
+def borrow_request(tool, user):
+    app.logger.debug("borrow request tool_id = " + tool)
+    app.logger.debug("borrow request user_id = " + user)
+    db.request_borrow_tool(tool, user)
+    return redirect(url_for('query_tools', qr=tool))
+
+
+@app.route('/send_to_check/<tool>', methods=["POST"])
+@login_required
+def send_to_check(tool):
+    app.logger.debug("send_to_check tool_id = " + tool)
+
+    db.send_tool_to_check(tool)
+
+    return redirect(url_for('query_tools', qr=tool))
+
+
+@app.route('/approve_borrow/<tool>', methods=["POST"])
+@login_required
+def approve_borrow(tool):
+    app.logger.debug("approve borrow tool_id = " + tool)
+
+    db.approve_borrow(tool, current_user, "")
+
+    return redirect(url_for('query_tools', qr=tool))
+
+
+@app.route('/deny_borrow/<tool>', methods=["POST"])
+@login_required
+def deny_borrow(tool):
+    app.logger.debug("deny borrow tool_id = " + tool)
+
+    db.deny_borrow(tool)
+
+    return redirect(url_for('query_tools', qr=tool))
+
+
+@app.route('/return_request/<tool>', methods=["POST"])
+@login_required
+def return_request(tool):
+    app.logger.debug("return_request tool_id = " + tool)
+    db.request_return(tool)
+
+    return redirect(url_for('query_tools', qr=tool))
+
+
+@app.route('/approve_return/<tool>', methods=['POST'])
+@login_required
+def approve_return(tool):
+    app.logger.debug("approve_return tool_id = " + tool)
+
+    db.approve_return(tool, current_user)
+
+    return redirect(url_for('query_tools', qr=tool))
+
+
+@app.route('/deny_return/<tool>', methods=["POST"])
+@login_required
+def deny_return(tool):
+    app.logger.debug("deny_return tool_id = " + tool)
+
+    db.deny_return(tool, current_user, "")
+
+    return redirect(url_for('query_tools', qr=tool))
+
+
+@app.route('/check_finished/<tool>', methods=["POST"])
+@login_required
+def check_finished(tool):
+    app.logger.debug("check_finished tool_id = " + tool)
+
+    db.check_finished(tool)
+
+    return redirect(url_for('query_tools', qr=tool))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -197,6 +269,20 @@ def add_tool_handler():
 @login_required
 def batch_add_tools_handler():
     return render_template('batch_add_tools.html'), 200
+
+
+@app.route('/dashboard/tools/<tool>', methods=['DELETE'])
+@login_required
+def delete_tool(tool):
+    if current_user.admin == 2:
+        if db.delete_tool(tool):
+            flash('删除成功!')
+        else:
+            flash('删除失败!')
+    else:
+        flash('权限不够')
+
+    return redirect(url_for('index'))
 
 
 @app.route('/dashboard/tools_list', methods=['GET', 'POST'])

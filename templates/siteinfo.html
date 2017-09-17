@@ -1,8 +1,4 @@
-{% extends "layout.html" %}
-
-{% block page_content %}
-
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "layout.html" %} {% block page_content %} {% import "bootstrap/wtf.html" as wtf %}
 
 {{ wtf.quick_form(form, extra_classes="center-block") }}
 
