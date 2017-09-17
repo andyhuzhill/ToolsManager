@@ -275,3 +275,14 @@ def set_site_info(site_name, welcome_info, copyright_info):
 def get_site_info():
     siteInfo = SiteInfo.query.first()
     return siteInfo
+
+
+def get_apply_list():
+    borrow_request_list = Tools.query.filter_by(status = 2).all()
+    return_request_list = Tools.query.filter_by(status = 4).all()
+
+    result = {}
+    result["borrow_list"] = borrow_request_list
+    result["return_list"] = return_request_list
+
+    return result

@@ -41,14 +41,14 @@ def index():
     if current_user.is_authenticated:
         userinfo = db.query_user(current_user.get_id())
 
-    return render_template('index.html', userinfo=userinfo, siteInfo=siteInfo), 200
+    return render_template('index.html', userinfo=userinfo, siteInfo=siteInfo)
 
 
 @app.route('/t/', methods=['GET', 'POST'])
 def query_tools():
     tool_id = request.args.get('qr', None)
     tool_info = db.query_tool_infos(tool_id)
-    return render_template('tools_details.html', info=tool_info), 200
+    return render_template('tools_details.html', info=tool_info)
 
 
 @app.route('/borrow_request/<tool>/from/<user>', methods=['POST'])
@@ -166,8 +166,8 @@ def internal_server_error(e):
 
 @app.route('/dashboard/approval', methods=['GET', 'POST'])
 def approval():
-    apply_list = []
-    return render_template('approval.html', apply_list=apply_list), 200
+    apply_list = db.get_apply_list()
+    return render_template('approval.html', apply_list=apply_list)
 
 
 @app.route('/images/tools/<tool_id>', methods=['GET'])
@@ -215,20 +215,20 @@ def add_user_handler():
         else:
             flash("添加用户失败!")
 
-    return render_template('add_user.html', form=add_user_form), 200
+    return render_template('add_user.html', form=add_user_form)
 
 
 @app.route('/dashboard/batch_add_users', methods=['GET', 'POST'])
 @login_required
 def batch_add_users_handler():
-    return render_template('batch_add_users.html'), 200
+    return render_template('batch_add_users.html')
 
 
 @app.route('/dashboard/users_list', methods=['GET', 'POST'])
 @login_required
 def users_list_handler():
     user_info_list = db.get_all_user_infos()
-    return render_template('users_list.html', user_list=user_info_list), 200
+    return render_template('users_list.html', user_list=user_info_list)
 
 
 @app.route('/dashboard/add_tools', methods=['GET', 'POST'])
@@ -253,8 +253,9 @@ def add_tool_handler():
         user = add_tools_form.user.data
         remarks = add_tools_form.remarks.data
 
-        tool = db.add_tool(tool_id, name, model, picture.read(), position, category, status, need_check,
-                           last_check_date, check_period, vendor, use_bureau, use_department, use_shift, user, remarks)
+        tool = db.add_tool(tool_id, name, model, picture.read(), position, category, status, 
+                           need_check, last_check_date, check_period, vendor, use_bureau, 
+                           use_department, use_shift, user, remarks)
 
         if tool is not None:
             flash('添加工具成功!')
@@ -262,13 +263,13 @@ def add_tool_handler():
         else:
             flash('添加工具失败!')
 
-    return render_template('add_tool.html', form=add_tools_form), 200
+    return render_template('add_tool.html', form=add_tools_form)
 
 
 @app.route('/dashboard/batch_add_tools', methods=['GET', 'POST'])
 @login_required
 def batch_add_tools_handler():
-    return render_template('batch_add_tools.html'), 200
+    return render_template('batch_add_tools.html')
 
 
 @app.route('/dashboard/tools/<tool>', methods=['DELETE'])
@@ -289,7 +290,7 @@ def delete_tool(tool):
 @login_required
 def tools_list_handler():
     tools_list = db.get_all_tools()
-    return render_template('tools_list.html', tool_infos=tools_list), 200
+    return render_template('tools_list.html', tool_infos=tools_list)
 
 
 @app.route('/dashboard/site_info_edit', methods=['GET', 'POST'])
@@ -304,13 +305,13 @@ def site_info():
             return redirect(url_for('index'))
         else:
             flash('站点信息修改失败!')
-    return render_template("siteinfo.html", form=siteInfoForm), 200
+    return render_template("siteinfo.html", form=siteInfoForm)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard_handler():
-    return render_template('dashboard.html'), 200
+    return render_template('dashboard.html')
 
 
 if __name__ == "__main__":

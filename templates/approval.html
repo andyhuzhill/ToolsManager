@@ -5,14 +5,39 @@
 </div>
 
 {% if True %}
+{% set borrow_requests = apply_list.borrow_list %}
+{% set return_requests = apply_list.return_list %}
 
 <center>
     <table>
-        <thead>工具借出申请列表</thead>
+        <thead>审批申请列表</thead>
+        <th>
+            <td>工具名称</td><td>申请人</td><td>操作</td>
+        </th>
         <tr>
-            {% for apply in apply_list %}
-            <td> apply.tool_name </td>
-            <td> apply.user_name </td>
+            {% for borrow in borrow_requests %}
+                <td>{{ borrow.name }}</td>
+                <td>{{ borrow.borrow_user }} </td> 
+                <td>
+                    <form action="{{url_for('approve_borrow', tool=borrow.tool_id)}}" method="post">
+                        <input type="submit" value="批准借出" class="btn btn-lg btn-primary form-control">
+                    </form>
+                    <form action="{{url_for('deny_borrow', tool=borrow.tool_id) }}" method="post">
+                        <input type="submit" value="拒绝借出" class="btn btn-lg btn-primary form-control">
+                    </form>
+                </td>
+            {% endfor %}
+            {% for return in return_requests  %}
+            <td>{{ return.name }}</td>
+            <td>{{ return.borrow_user }}</td>
+            <td>
+                <form action="{{url_for('approve_return', tool=return.tool_id) }}" method="post">
+                    <input type="submit" value="批准归还" class="btn btn-lg btn-primary form-control">
+                </form>
+                <form action="{{ url_for('deny_return', tool=return.tool_id) }}" method="post">
+                    <input type="submit" value="拒绝归还" class="btn btn-lg btn-primary form-control">
+                </form>
+            </td>
             {% endfor %}
         </tr>
     </table>
